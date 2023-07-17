@@ -40,6 +40,3 @@ def user_interface():
             print(welcome_msg)
         elif command == "exit":
             break
-
-
-user_interface()
