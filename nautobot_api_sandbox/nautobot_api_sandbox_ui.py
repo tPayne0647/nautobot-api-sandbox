@@ -5,12 +5,12 @@ welcome_msg = """
       ************************************************************************************
         Here is a list of available commands:
         show_sites.............................Get list of all sites
-        show_devices [SITE NAME]..........Get count of devices and list device names
-        create_tenant [TENANT NAME]...........Create a new tenant with specified name
-        get_tenant_id [TENANT NAME]...........Get UUID of specified tenant
-        delete_tenant [TENANT NAME]...........Delete specified tenant
-        show_tenants......................Get count and list all tenant names
-        help..................................Reprint this window
+        show_devices [SITE NAME]...............Get count of devices and list device names
+        create_tenant [TENANT NAME]............Create a new tenant with specified name
+        get_tenant_id [TENANT NAME]............Get UUID of specified tenant
+        delete_tenant [TENANT NAME]............Delete specified tenant
+        show_tenants...........................Get count and list all tenant names
+        help...................................Reprint this window
         
       ************************************************************************************
       """
