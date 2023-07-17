@@ -1,8 +1,8 @@
 This is just a basic program for me to play around with Nautobot Demo API
 
 To install-
-1.)cd to the directory of this project
-2.) type 'pip install .' in terminal and press enter
+* cd to the directory of this project
+*  type 'pip install .' in terminal and press enter
 
 
 to run program-
@@ -11,7 +11,7 @@ to run program-
 * type in desired commmand and press enter NOTE- you dont need to add () or "" just simply type the command and the name 
 
 for help-
-*type help and press enter
+* type help and press enter
 
 to exit-
-*type 'exit' and press enter
+* type 'exit' and press enter
