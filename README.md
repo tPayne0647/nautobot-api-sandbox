@@ -8,7 +8,7 @@ To install-
 to run program-
 * type 'nautobot_api_sandbox' in terminal and press enter
 * a welcome menu will appear with available commands. 
-* type in desired commmand and press enter NOTE- you dont need to add () or "" just simply type the command and the name 
+* type in desired commmand and press enter. NOTE- you dont need to add () or "" just simply type the command and the name 
 
 for help-
 * type help and press enter
