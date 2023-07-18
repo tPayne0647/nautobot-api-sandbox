@@ -1,4 +1,8 @@
-from nautobot_api_sandbox.nauto_demo_functions import DemoNautobotClient
+from nautobot_api_sandbox.nauto_demo_functions import (
+    DemoNautobotClient,
+    TenantNotFoundError,
+    SiteNotFoundError,
+)
 
 welcome_msg = """
                        Welcome to tPayne's nautobot demo API sandbox!
@@ -37,19 +41,29 @@ def user_interface():
                 arg = command_input[1].strip()
 
         if command == "show_sites":
-            nautobot_client.show_sites()
+            nautobot_client.display_sites()
         elif command == "show_devices":
-            nautobot_client.show_devices(arg)
+            try:
+                nautobot_client.display_devices(arg)
+            except SiteNotFoundError:
+                print(f"Site '{arg}' not found. Please enter a valid site name.")
+
         elif command == "create_tenant":
             nautobot_client.create_tenant(arg)
         elif command == "delete_tenant":
-            nautobot_client.delete_tenant(arg)
+            try:
+                nautobot_client.delete_tenant(arg)
+            except TenantNotFoundError:
+                print(f"Tenant '{arg}' not found. Please enter a valid tenant name.")
         elif command == "show_tenants":
-            nautobot_client.show_tenants()
+            nautobot_client.display_tenants()
         elif command == "get_tenant":
-            tenant = nautobot_client.get_tenant(arg)
-            if tenant is not None:
-                print(f"Tenant ID: {tenant.id}\nTenant Name: {tenant.name}")
+            try:
+                tenant = nautobot_client.get_tenant(arg)
+                if tenant is not None:
+                    print(f"Tenant ID: {tenant.id}\nTenant Name: {tenant.name}")
+            except TenantNotFoundError:
+                print(f"Tenant '{arg}' not found. Please enter a valid tenant name.")
         elif command == "help":
             print(welcome_msg)
         elif command == "exit":
