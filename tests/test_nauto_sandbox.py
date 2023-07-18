@@ -15,18 +15,22 @@ def mock_api():
     mock_api = MagicMock()
 
     # Mock the Sites API response
-    mock_api.dcim.sites.all.return_value = [
-        MagicMock(name="site1"),
-        MagicMock(name="site2"),
-        MagicMock(name="site3"),
-    ]
+    site1 = MagicMock(name="site1")
+    site1.name = "site1"
+    site2 = MagicMock(name="site2")
+    site2.name = "site2"
+    site3 = MagicMock(name="site3")
+    site3.name = "site3"
+    mock_api.dcim.sites.all.return_value = [site1, site2, site3]
 
     # Mock the Devices API response
-    mock_api.dcim.devices.filter.return_value = [
-        MagicMock(name="device1"),
-        MagicMock(name="device2"),
-        MagicMock(name="device3"),
-    ]
+    device1 = MagicMock(name="device1")
+    device1.name = "device1"
+    device2 = MagicMock(name="device2")
+    device2.name = "device2"
+    device3 = MagicMock(name="device3")
+    device3.name = "device3"
+    mock_api.dcim.devices.filter.return_value = [device1, device2, device3]
 
     return mock_api
 
