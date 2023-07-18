@@ -11,3 +11,5 @@
 # Ignore logs and temporary files
 logs/
 temp/
+
+nautobot_api_sandbox.egg-info/
