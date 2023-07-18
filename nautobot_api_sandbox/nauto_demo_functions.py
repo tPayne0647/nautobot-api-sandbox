@@ -2,8 +2,11 @@ import pynautobot
 
 
 class DemoNautobotClient:
-    def __init__(self, api_token):
-        self.api = pynautobot.api("https://demo.nautobot.com", token=api_token)
+    def __init__(self, api_token, api=None):
+        if api is None:
+            self.api = pynautobot.api("https://demo.nautobot.com", token=api_token)
+        else:
+            self.api = api
 
     def show_sites(self):
         sites = self.api.dcim.sites.all()
