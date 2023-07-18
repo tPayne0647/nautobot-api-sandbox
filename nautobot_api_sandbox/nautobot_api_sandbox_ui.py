@@ -1,5 +1,6 @@
 """This is the command line interface for the Nautobot API Sandbox."""
 
+import logging
 from nautobot_api_sandbox.nauto_demo_functions import (
     DemoNautobotClient,
     TenantNotFoundError,
@@ -27,6 +28,11 @@ def user_interface():
     nautobot_client = DemoNautobotClient(api_token=api_token)
     print(WELCOME_MSG)
 
+    # Set up logging
+    logger = logging.getLogger(__name__)
+    logger.addHandler(logging.StreamHandler())  # Outputs log messages to the console
+    logger.setLevel(logging.INFO)  # Set the desired log level
+
     # Commands that need an argument
     commands_with_arg = ["show_devices", "create_tenant", "delete_tenant", "get_tenant"]
 
@@ -37,7 +43,7 @@ def user_interface():
         # Check if the command needs an argument and if it was provided
         if command in commands_with_arg:
             if len(command_input) == 1:
-                print(f"The {command} command requires an argument.")
+                logger.error("The %s command requires an argument.", command)
                 continue
             arg = command_input[1].strip()
 
@@ -47,7 +53,7 @@ def user_interface():
             try:
                 nautobot_client.display_devices(arg)
             except SiteNotFoundError:
-                print(f"Site '{arg}' not found. Please enter a valid site name.")
+                logger.error("Site %s not found. Please enter a valid site name.", arg)
 
         elif command == "create_tenant":
             nautobot_client.create_tenant(arg)
@@ -55,23 +61,24 @@ def user_interface():
             try:
                 nautobot_client.delete_tenant(arg)
             except TenantNotFoundError:
-                print(f"Tenant '{arg}' not found. Please enter a valid tenant name.")
+                logger.error("Tenant '%s' not found. Please enter a valid tenant name.", arg)
         elif command == "show_tenants":
             nautobot_client.display_tenants()
         elif command == "get_tenant":
             try:
                 tenant = nautobot_client.get_tenant(arg)
                 if tenant is not None:
-                    print(f"Tenant ID: {tenant.id}\nTenant Name: {tenant.name}")
+                    logger.info("Tenant ID: %s\nTenant Name: %s", tenant.id, tenant.name)
             except TenantNotFoundError:
-                print(f"Tenant '{arg}' not found. Please enter a valid tenant name.")
+                logger.error("Tenant '%s' not found. Please enter a valid tenant name.", arg)
         elif command == "help":
             print(WELCOME_MSG)
         elif command == "exit":
             break
         else:
-            print("Unrecognized command. Type 'help' to see the list of available commands.")
+            logger.error("Unrecognized command. Type 'help' to see the list of available commands.")
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     user_interface()
