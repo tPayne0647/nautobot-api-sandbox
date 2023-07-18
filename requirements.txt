@@ -1,0 +1,8 @@
+certifi==2023.5.7
+charset-normalizer==3.2.0
+click==8.1.5
+idna==3.4
+-e git+https://github.com/tPayne0647/nautobot-api-sandbox@a67070122981bd546cc8ec081eef43dd2dc2bb74#egg=nautobot_api_sandbox
+pynautobot==1.5.0
+requests==2.31.0
+urllib3==1.26.16
