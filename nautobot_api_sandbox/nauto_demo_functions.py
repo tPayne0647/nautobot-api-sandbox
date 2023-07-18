@@ -1,94 +1,39 @@
-import requests
-import json
-
+from pynautobot import api
 
 class DemoNautobotClient:
     def __init__(self, api_token):
-        self.base_url = "https://demo.nautobot.com/api/"
-        self.headers = {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-        "Authorization": f"Token {api_token}",
-    }
-    
-    
-    def _get(self, url, params=None):
-        response = requests.get(url, headers=self.headers, params=params)
-        response.raise_for_status()
-        return response.json()
-    
-    
-    def _post(self, url, data=None):
-        response = requests.post(url, headers=self.headers, json=data)
-        response.raise_for_status()
-        return response.json()
-    
-    
-    def _delete(self, url):
-        response = requests.delete(url, headers=self.headers)
-        response.raise_for_status()
-        return response
-    
+        self.api = api("https://demo.nautobot.com", token=api_token)
     
     def show_sites(self):
-        sites_url = self.base_url + "dcim/sites/"
-        data = self._get(sites_url)
-        sites = [site["name"] for site in data["results"]]
-        print(f"\nTotal sites: {len(sites)}\n \n{sites}")
+        sites = self.api.dcim.sites.all()
+        print(f"\nTotal sites: {len(sites)}\n \n{[site.name for site in sites]}")
         return sites
-    
-    
+
     def show_devices(self, selected_site):
-        devices_url = self.base_url + "dcim/devices/"
-        parameters = {"site": selected_site}
-        data = self._get(devices_url, params=parameters)
-        total_site_devices = data["count"]
-        device_names = [device["name"] for device in data["results"]]
+        devices = self.api.dcim.devices.filter(site=selected_site)
+        print(f"\nTotal number of devices in [{selected_site.upper()}]: {len(devices)}\n\n{[device.name for device in devices]}")
+        return devices
 
-        print(f"\nTotal number of devices in [{selected_site.upper()}]: {total_site_devices}\n\n{device_names}")
-        return total_site_devices
-    
-    
     def create_tenant(self, name):
-        tenant_url = self.base_url + "tenancy/tenants/"
-        data = {"name": name}
-        response = self._post(tenant_url, data=data)
-        
+        tenant = self.api.tenancy.tenants.create(name=name)
         print("Tenant created successfully.\n")
-        tenant_id = response.get("id")
-        return response
-    
-    
-    def get_tenant_id(self, name):
-        tenant_url = self.base_url + "tenancy/tenants/"
-        data = self._get(tenant_url)
+        return tenant
 
-        tenants = data["results"]
-        for tenant in tenants:
-            if tenant["name"] == name:
-                print(tenant["id"])
-                return tenant["id"]
+    def get_tenant(self, name):
+        tenant = self.api.tenancy.tenants.get(name=name)
+        if tenant is None:
+            print(f"Tenant with name '{name}' not found.")
+        else:
+            print(tenant.id)
+        return tenant
 
-        print(f"Tenant with name '{name}' not found.")
-        return None
-    
-    
     def delete_tenant(self, name):
-        tenant_id = self.get_tenant_id(name)
-        if tenant_id is None:
-            return
+        tenant = self.get_tenant(name)
+        if tenant is not None:
+            tenant.delete()
+            print(f"Tenant [{name}] deleted successfully!")
 
-        delete_tenant_url = self.base_url + "tenancy/tenants/" + tenant_id
-        self._delete(delete_tenant_url)
-
-        print(f"Tenant [{name}] deleted successfully!")
-        
-        
     def show_tenants(self):
-        tenant_url = self.base_url + "tenancy/tenants/"
-        data = self._get(tenant_url)
-
-        tenant_names = [tenant["name"] for tenant in data["results"]]
-
-        print(f"\nTotal tenants: {len(tenant_names)}\n \n{tenant_names}")
-        return tenant_names
+        tenants = self.api.tenancy.tenants.all()
+        print(f"\nTotal tenants: {len(tenants)}\n \n{[tenant.name for tenant in tenants]}")
+        return tenants

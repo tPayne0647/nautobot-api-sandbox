@@ -1,6 +1,5 @@
 from .nauto_demo_functions import DemoNautobotClient
 
-
 welcome_msg = """
                        Welcome to tPayne's nautobot demo API sandbox!
       ************************************************************************************
@@ -8,25 +7,7 @@ welcome_msg = """
         show_sites.............................Get list of all sites
         show_devices [SITE NAME]...............Get count of devices and list device names
         create_tenant [TENANT NAME]............Create a new tenant with specified name
-        get_tenant_id [TENANT NAME]............Get UUID of specified tenant
-        delete_tenant [TENANT NAME]............Delete specified tenant
-        show_tenants...........................Get count and list all tenant names
-        help...................................Reprint this window
-        
-      ************************************************************************************
-      """
-
-
-from .nauto_demo_functions import DemoNautobotClient
-
-welcome_msg = """
-                       Welcome to tPayne's nautobot demo API sandbox!
-      ************************************************************************************
-        Here is a list of available commands:
-        show_sites.............................Get list of all sites
-        show_devices [SITE NAME]...............Get count of devices and list device names
-        create_tenant [TENANT NAME]............Create a new tenant with specified name
-        get_tenant_id [TENANT NAME]............Get UUID of specified tenant
+        get_tenant [TENANT NAME]...............Get specified tenant
         delete_tenant [TENANT NAME]............Delete specified tenant
         show_tenants...........................Get count and list all tenant names
         help...................................Reprint this window
@@ -41,7 +22,7 @@ def user_interface():
     print(welcome_msg)
 
     # Commands that need an argument
-    commands_with_arg = ["show_devices", "create_tenant", "delete_tenant", "get_tenant_id"]
+    commands_with_arg = ["show_devices", "create_tenant", "delete_tenant", "get_tenant"]
 
     while True:
         command_input = input("Enter a command: ").split(" ", 1)
@@ -65,8 +46,10 @@ def user_interface():
             nautobot_client.delete_tenant(arg)
         elif command == "show_tenants":
             nautobot_client.show_tenants()
-        elif command == "get_tenant_id":
-            nautobot_client.get_tenant_id(arg)
+        elif command == "get_tenant":
+            tenant = nautobot_client.get_tenant(arg)
+            if tenant is not None:
+                print(f"Tenant ID: {tenant.id}\nTenant Name: {tenant.name}")
         elif command == "help":
             print(welcome_msg)
         elif command == "exit":
