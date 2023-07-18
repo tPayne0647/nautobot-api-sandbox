@@ -1,2 +1,3 @@
 pynautobot==1.5.0
+black==27.7.0
 #click==8.1.5
