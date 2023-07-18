@@ -3,7 +3,6 @@ import pytest
 from nautobot_api_sandbox.nauto_demo_functions import DemoNautobotClient
 
 
-# Mock Site class
 class MockSite:
     def __init__(self, name):
         self.name = name
@@ -71,3 +70,87 @@ def test_show_devices(client, mock_api, capfd):
     assert "device1" in out
     assert "device2" in out
     assert "device3" in out
+
+
+def test_create_tenant(client, mock_api, capfd):
+    # Mock the tenant creation
+    mock_tenant = MagicMock()
+    mock_api.tenancy.tenants.create.return_value = mock_tenant
+
+    # Call the function
+    client.create_tenant(name="Test Tenant")
+
+    # Capture the output
+    out, err = capfd.readouterr()
+
+    # Check the output
+    assert "Tenant created successfully." in out
+
+
+def test_get_tenant_existing(client, mock_api, capfd):
+    # Mock the tenant retrieval
+    mock_tenant = MagicMock()
+    mock_tenant.name = "Test Tenant"
+    mock_tenant.id = 123
+    mock_api.tenancy.tenants.get.return_value = mock_tenant
+
+    # Call the function with an existing tenant name
+    tenant = client.get_tenant(name="Test Tenant")
+
+    # Capture the output
+    out, err = capfd.readouterr()
+
+    # Check the output and return value
+    assert out.strip() == "123"  # Check if the ID is printed
+    assert tenant == mock_tenant
+    mock_api.tenancy.tenants.get.assert_called_once_with(name="Test Tenant")
+
+
+def test_get_tenant_nonexistent(client, mock_api, capfd):
+    # Mock the tenant retrieval
+    mock_api.tenancy.tenants.get.return_value = None
+
+    # Call the function with a non-existent tenant name
+    client.get_tenant(name="Nonexistent Tenant")
+
+    # Capture the output
+    out, err = capfd.readouterr()
+
+    # Check the output
+    assert out.strip() == "Tenant with name 'Nonexistent Tenant' not found."
+    mock_api.tenancy.tenants.get.assert_called_with(name="Nonexistent Tenant")
+
+
+def test_delete_tenant_existing(client, mock_api, capfd):
+    # Mock the tenant retrieval
+    mock_tenant = MagicMock()
+    mock_tenant.name = "Test Tenant"
+    mock_api.tenancy.tenants.get.return_value = mock_tenant
+
+    # Call the function with an existing tenant name
+    client.delete_tenant(name="Test Tenant")
+
+    # Capture the output
+    out, err = capfd.readouterr()
+
+    # Check the output
+    expected_output = f"Tenant [{mock_tenant.name}] deleted successfully!"
+    assert expected_output in out.strip()
+    mock_api.tenancy.tenants.get.assert_called_once_with(name="Test Tenant")
+    mock_tenant.delete.assert_called_once()
+
+
+def test_delete_tenant_nonexistent(client, mock_api, capfd):
+    # Mock the tenant retrieval
+    mock_api.tenancy.tenants.get.return_value = None
+
+    # Call the function with a non-existent tenant name
+    client.delete_tenant(name="Nonexistent Tenant")
+
+    # Capture the output
+    out, err = capfd.readouterr()
+
+    # Check the output
+    expected_output = "Tenant with name 'Nonexistent Tenant' not found."
+    assert expected_output in out.strip()
+    mock_api.tenancy.tenants.get.assert_called_with(name="Nonexistent Tenant")

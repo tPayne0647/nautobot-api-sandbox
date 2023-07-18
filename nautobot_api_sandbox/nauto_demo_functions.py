@@ -38,6 +38,8 @@ class DemoNautobotClient:
         if tenant is not None:
             tenant.delete()
             print(f"Tenant [{name}] deleted successfully!")
+        else:
+            print(f"Tenant with name '{name}' not found.")
 
     def show_tenants(self):
         tenants = self.api.tenancy.tenants.all()
