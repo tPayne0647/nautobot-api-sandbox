@@ -1,5 +1,6 @@
 from .nauto_demo_functions import DemoNautobotClient
 
+
 welcome_msg = """
                        Welcome to tPayne's nautobot demo API sandbox!
       ************************************************************************************

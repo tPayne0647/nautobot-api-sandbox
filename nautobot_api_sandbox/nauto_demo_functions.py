@@ -23,6 +23,7 @@ class DemoNautobotClient:
         response.raise_for_status()
         return response.json()
     
+    
     def _delete(self, url):
         response = requests.delete(url, headers=self.headers)
         response.raise_for_status()
