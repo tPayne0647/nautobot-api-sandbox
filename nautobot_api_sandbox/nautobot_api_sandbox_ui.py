@@ -7,7 +7,7 @@ welcome_msg = """
         show_sites.............................Get list of all sites
         show_devices [SITE NAME]...............Get count of devices and list device names
         create_tenant [TENANT NAME]............Create a new tenant with specified name
-        get_tenant_id [TENANT NAME]............Get UUID of specified tenant
+        get_tenant [TENANT NAME]...............Get specified tenant
         delete_tenant [TENANT NAME]............Delete specified tenant
         show_tenants...........................Get count and list all tenant names
         help...................................Reprint this window
@@ -17,29 +17,42 @@ welcome_msg = """
 
 
 def user_interface():
-    # api_token = input("Please enter your api token: ")
-    api_token = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+    api_token = input("Please enter your api token: ")
     nautobot_client = DemoNautobotClient(api_token=api_token)
     print(welcome_msg)
+
+    # Commands that need an argument
+    commands_with_arg = ["show_devices", "create_tenant", "delete_tenant", "get_tenant"]
+
     while True:
-        command = input("Enter a command: ")
+        command_input = input("Enter a command: ").split(" ", 1)
+        command = command_input[0]
+
+        # Check if the command needs an argument and if it was provided
+        if command in commands_with_arg:
+            if len(command_input) == 1:
+                print(f"The {command} command requires an argument.")
+                continue
+            else:
+                arg = command_input[1].strip()
+
         if command == "show_sites":
             nautobot_client.show_sites()
-        elif command.startswith("show_devices"):
-            _, site_name = command.split(" ", 1)
-            nautobot_client.show_devices(site_name.strip())
-        elif command.startswith("create_tenant"):
-            _, tenant_name = command.split(" ", 1)
-            nautobot_client.create_tenant(tenant_name.strip())
-        elif command.startswith("delete_tenant"):
-            _, tenant_name = command.split(" ", 1)
-            nautobot_client.delete_tenant(tenant_name.strip())
+        elif command == "show_devices":
+            nautobot_client.show_devices(arg)
+        elif command == "create_tenant":
+            nautobot_client.create_tenant(arg)
+        elif command == "delete_tenant":
+            nautobot_client.delete_tenant(arg)
         elif command == "show_tenants":
             nautobot_client.show_tenants()
-        elif command.startswith("get_tenant_id"):
-            _, name = command.split(" ", 1)
-            nautobot_client.get_tenant_id(name.strip())
+        elif command == "get_tenant":
+            tenant = nautobot_client.get_tenant(arg)
+            if tenant is not None:
+                print(f"Tenant ID: {tenant.id}\nTenant Name: {tenant.name}")
         elif command == "help":
             print(welcome_msg)
         elif command == "exit":
             break
+        else:
+            print("Unrecognized command. Type 'help' to see the list of available commands.")
