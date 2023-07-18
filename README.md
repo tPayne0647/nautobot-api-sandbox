@@ -7,8 +7,7 @@ To install-
 
 to run program-
 * type 'nautobot_api_sandbox' in terminal and press enter
-* type in demo api token found at: demo.nautobot.com (log in using demo account, token can be found under account settings)
-* a welcome menu will appear with available commands. 
+* type in demo api token found at: demo.nautobot.com ('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'). 
 * type in desired command and press enter. NOTE- you don't need to add '()' or "". just simply type the command and the name 
 
 for help-

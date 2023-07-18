@@ -17,8 +17,7 @@ welcome_msg = """
 
 
 def user_interface():
-    # api_token = input("Please enter your api token: ")
-    api_token = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+    api_token = input("Please enter your api token: ")
     nautobot_client = DemoNautobotClient(api_token=api_token)
     print(welcome_msg)
     while True:
