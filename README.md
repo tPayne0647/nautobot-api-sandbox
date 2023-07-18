@@ -19,5 +19,6 @@ to exit-
 
 -currently working on/ want to add
 * exception handling?
+* unittest
 
 This is a work in progress!!!
