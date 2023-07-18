@@ -1,5 +1,4 @@
-"""This module provides the DemoNautobotClient class for interacting with Nautobot."""
-
+import logging
 import pynautobot
 from pynautobot.core.query import RequestError
 
@@ -22,6 +21,10 @@ class DemoNautobotClient:
         else:
             self.api = api
 
+        self.logger = logging.getLogger(__name__)
+        self.logger.addHandler(logging.StreamHandler())  # Outputs log messages to the console
+        self.logger.setLevel(logging.INFO)  # Set the desired log level
+
     def get_sites(self):
         """Return a list of all sites."""
         return self.api.dcim.sites.all()
@@ -29,7 +32,7 @@ class DemoNautobotClient:
     def display_sites(self):
         """Display the names of all sites."""
         sites = self.get_sites()
-        print(f"\nTotal sites: {len(sites)}\n \n{[site.name for site in sites]}")
+        self.logger.info(f"\nTotal sites: {len(sites)}\n \n{[site.name for site in sites]}")
 
     def get_devices(self, selected_site):
         """Return a list of all devices at the specified site, or raise SiteNotFoundError if the site does not exist."""
@@ -46,14 +49,14 @@ class DemoNautobotClient:
     def display_devices(self, selected_site):
         """Display the names of all devices at the specified site."""
         devices = self.get_devices(selected_site)
-        print(
+        self.logger.info(
             f"\nTotal number of devices in [{selected_site.upper()}]: {len(devices)}\n\n{[device.name for device in devices]}"
         )
 
     def create_tenant(self, name):
         """Create a new tenant with the specified name and return it."""
         tenant = self.api.tenancy.tenants.create(name=name)
-        print(f"Tenant '{name}' created successfully.\n")
+        self.logger.info(f"Tenant '{name}' created successfully.\n")
         return tenant
 
     def get_tenant(self, name):
@@ -68,7 +71,7 @@ class DemoNautobotClient:
         tenant = self.get_tenant(name)
         if tenant is not None:
             tenant.delete()
-            print(f"Tenant '{name}' deleted successfully!")
+            self.logger.info(f"Tenant '{name}' deleted successfully!")
         else:
             raise TenantNotFoundError(f"Tenant with name '{name}' not found.")
 
@@ -79,4 +82,6 @@ class DemoNautobotClient:
     def display_tenants(self):
         """Display the names of all tenants."""
         tenants = self.get_tenants()
-        print(f"\nTotal tenants: {len(tenants)}\n \n{[tenant.name for tenant in tenants]}")
+        self.logger.info(
+            f"\nTotal tenants: {len(tenants)}\n \n{[tenant.name for tenant in tenants]}"
+        )
