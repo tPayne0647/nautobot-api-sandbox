@@ -42,3 +42,5 @@ def user_interface():
             print(welcome_msg)
         elif command == "exit":
             break
+        else:
+            print("Unrecognized command. Type 'help' to see the list of available commands.")
