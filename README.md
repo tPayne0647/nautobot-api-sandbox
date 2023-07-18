@@ -20,5 +20,6 @@ to exit-
 -currently working on/ want to add
 * exception handling?
 * unittest
+* integrate click?
 
 This is a work in progress!!!
