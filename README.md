@@ -18,7 +18,6 @@ to exit-
 
 
 -currently working on/ want to add
-* incorporating classes
-* request error handling
+* exception handling?
 
 This is a work in progress!!!
