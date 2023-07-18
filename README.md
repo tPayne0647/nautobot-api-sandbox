@@ -17,6 +17,8 @@ to exit-
 * type 'exit' and press enter
 
 
--currently working on incorporating classes. Feel free to add anything.
+-currently working on/ want to add
+* incorporating classes
+* request error handling
 
 This is a work in progress!!!
