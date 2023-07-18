@@ -21,14 +21,12 @@ headers = {
 
 def show_sites():
     global sites
-    data = requests.get(
-        sites_url,
-        headers=headers,
-    )
+    data = requests.get(sites_url,headers=headers,)
     sites_data = data.json()
 
     sites = [site["name"] for site in sites_data["results"]]
-    print(f"\nTotal sites: {len(sites)}\n \n{sites}")
+    total_sites = len(sites)
+    print(f"\nTotal sites: {total_sites}\n \n{sites}")
     return sites
 
 
@@ -39,14 +37,13 @@ def show_devices(selected_site):
         headers=headers,
         params=test_parameters,
     )
-    total_site_devices = device_data.json()["count"]
     name_list = device_data.json()
     device_names = [device["name"] for device in name_list["results"]]
+    total_devices = len(device_names)
 
-    print(
-        f"\nTotal number of devices in [{selected_site.upper()}]: {total_site_devices}\n\n{device_names}"
-    )
-    return total_site_devices
+    print(f"\nTotal number of devices in [{selected_site.upper()}]: {total_devices}\n\n{device_names}")
+    return total_devices
+    
 
 
 tenant_id = ""
@@ -87,7 +84,7 @@ def get_tenant_id(name):
 def delete_tenant(name):
     tenant_id = get_tenant_id(name)
     if tenant_id is None:
-        return
+        return 
 
     delete_tenant_url = tenant_url + tenant_id
     response = requests.delete(delete_tenant_url, headers=headers)
@@ -100,7 +97,6 @@ def delete_tenant(name):
 
 def show_tenants():
     tenant_data = requests.get(tenant_url, headers=headers)
-    total_tenants = tenant_data.json()["count"]
     name_list = tenant_data.json()
     tenant_names = [tenant["name"] for tenant in name_list["results"]]
 
