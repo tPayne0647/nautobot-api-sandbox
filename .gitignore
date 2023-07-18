@@ -12,4 +12,5 @@
 logs/
 temp/
 
+# other
 nautobot_api_sandbox.egg-info/
