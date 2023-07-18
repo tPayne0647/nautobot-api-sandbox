@@ -1,34 +1,31 @@
-import pytest
+"""
+Module for testing Nautobot API Sandbox
+"""
+
 from unittest.mock import MagicMock
+import pytest
 from nautobot_api_sandbox.nauto_demo_functions import DemoNautobotClient, TenantNotFoundError
-
-
-class MockSite:
-    def __init__(self, name):
-        self.name = name
-
-
-class MockDevice:
-    def __init__(self, name):
-        self.name = name
 
 
 @pytest.fixture
 def mock_api():
+    """
+    Mock API fixture for testing.
+    """
     mock_api = MagicMock()
 
     # Mock the Sites API response
     mock_api.dcim.sites.all.return_value = [
-        MockSite(name="site1"),
-        MockSite(name="site2"),
-        MockSite(name="site3"),
+        MagicMock(name="site1"),
+        MagicMock(name="site2"),
+        MagicMock(name="site3"),
     ]
 
     # Mock the Devices API response
     mock_api.dcim.devices.filter.return_value = [
-        MockDevice(name="device1"),
-        MockDevice(name="device2"),
-        MockDevice(name="device3"),
+        MagicMock(name="device1"),
+        MagicMock(name="device2"),
+        MagicMock(name="device3"),
     ]
 
     return mock_api
@@ -36,15 +33,24 @@ def mock_api():
 
 @pytest.fixture
 def mock_token():
+    """
+    Mock API token fixture for testing.
+    """
     return "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 
 
 @pytest.fixture
 def client(mock_api, mock_token):
+    """
+    Nautobot API client fixture for testing.
+    """
     return DemoNautobotClient(api_token=mock_token, api=mock_api)
 
 
 def test_show_sites(client, mock_api):
+    """
+    Test case for showing sites.
+    """
     sites = client.get_sites()
     assert len(sites) == 3
     assert sites[0].name == "site1"
@@ -53,6 +59,9 @@ def test_show_sites(client, mock_api):
 
 
 def test_show_devices(client, mock_api):
+    """
+    Test case for showing devices.
+    """
     devices = client.get_devices(selected_site="site1")
     assert len(devices) == 3
     assert devices[0].name == "device1"
@@ -61,6 +70,9 @@ def test_show_devices(client, mock_api):
 
 
 def test_create_tenant(client, mock_api):
+    """
+    Test case for creating a tenant.
+    """
     mock_tenant = MagicMock()
     mock_api.tenancy.tenants.create.return_value = mock_tenant
     tenant = client.create_tenant(name="Test Tenant")
@@ -68,6 +80,9 @@ def test_create_tenant(client, mock_api):
 
 
 def test_get_tenant_existing(client, mock_api):
+    """
+    Test case for getting an existing tenant.
+    """
     mock_tenant = MagicMock()
     mock_tenant.name = "Test Tenant"
     mock_tenant.id = 123
@@ -79,6 +94,9 @@ def test_get_tenant_existing(client, mock_api):
 
 
 def test_get_tenant_nonexistent(client, mock_api):
+    """
+    Test case for getting a nonexistent tenant.
+    """
     mock_api.tenancy.tenants.get.return_value = None
     with pytest.raises(TenantNotFoundError):
         client.get_tenant(name="Nonexistent Tenant")
@@ -86,6 +104,9 @@ def test_get_tenant_nonexistent(client, mock_api):
 
 
 def test_delete_tenant_existing(client, mock_api):
+    """
+    Test case for deleting an existing tenant.
+    """
     mock_tenant = MagicMock()
     mock_tenant.name = "Test Tenant"
     mock_api.tenancy.tenants.get.return_value = mock_tenant
@@ -95,6 +116,9 @@ def test_delete_tenant_existing(client, mock_api):
 
 
 def test_delete_tenant_nonexistent(client, mock_api):
+    """
+    Test case for deleting a nonexistent tenant.
+    """
     mock_api.tenancy.tenants.get.return_value = None
     with pytest.raises(TenantNotFoundError):
         client.delete_tenant(name="Nonexistent Tenant")
