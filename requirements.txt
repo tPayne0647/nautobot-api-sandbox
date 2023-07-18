@@ -1,2 +1,2 @@
-click==8.1.5
 pynautobot==1.5.0
+#click==8.1.5
