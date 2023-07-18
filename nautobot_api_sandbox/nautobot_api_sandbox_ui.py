@@ -1,4 +1,4 @@
-from .nauto_demo_functions import *
+from .nauto_demo_functions import DemoNautobotClient
 
 welcome_msg = """
                        Welcome to tPayne's nautobot demo API sandbox!
@@ -17,26 +17,29 @@ welcome_msg = """
 
 
 def user_interface():
+    # api_token = input("Please enter your api token: ")
+    api_token = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+    nautobot_client = DemoNautobotClient(api_token=api_token)
     print(welcome_msg)
     while True:
         command = input("Enter a command: ")
         if command == "show_sites":
-            show_sites()
+            nautobot_client.show_sites()
         elif command.startswith("show_devices"):
             _, site_name = command.split(" ", 1)
-            show_devices(site_name.strip())
+            nautobot_client.show_devices(site_name.strip())
         elif command.startswith("create_tenant"):
             _, tenant_name = command.split(" ", 1)
-            create_tenant(tenant_name.strip())
+            nautobot_client.create_tenant(tenant_name.strip())
         elif command.startswith("delete_tenant"):
             _, tenant_name = command.split(" ", 1)
-            delete_tenant(tenant_name.strip())
-        elif command.startswith("show_tenants"):
-            show_tenants()
+            nautobot_client.delete_tenant(tenant_name.strip())
+        elif command == "show_tenants":
+            nautobot_client.show_tenants()
         elif command.startswith("get_tenant_id"):
             _, name = command.split(" ", 1)
-            get_tenant_id(name.strip())
-        elif command.startswith("help"):
+            nautobot_client.get_tenant_id(name.strip())
+        elif command == "help":
             print(welcome_msg)
         elif command == "exit":
             break
