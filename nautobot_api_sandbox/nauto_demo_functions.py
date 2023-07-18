@@ -1,8 +1,8 @@
-from pynautobot import api
+import pynautobot
 
 class DemoNautobotClient:
     def __init__(self, api_token):
-        self.api = api("https://demo.nautobot.com", token=api_token)
+        self.api = pynautobot.api("https://demo.nautobot.com", token=api_token)
     
     def show_sites(self):
         sites = self.api.dcim.sites.all()

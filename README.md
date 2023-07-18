@@ -2,7 +2,7 @@ This is just a basic program for me to play around with Nautobot Demo API (demo.
 
 To install-
 * cd to the directory of this project (after cloning)
-*  type 'pip install .' in terminal and press enter
+*  type 'pip install -e /home/USER/nautobot_api_sandbox' in terminal and press enter (change 'USER' to your username)
 
 
 to run program-
