@@ -17,6 +17,8 @@ Before getting started, make sure you have the following installed on your machi
 4. Activate the virtual environment created by Poetry: `poetry shell`
 5. Run the program: `python nautobot_api_sandbox/nautobot_api_sandbox_ui.py`
 
+Demo token: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
    This will start the Nautobot API Sandbox command-line interface.
    Follow the instructions in the application to interact with the Nautobot API.
    NOTE: You don't need to add '()' or "" quotes. Simply type the command + the name (e.g., create_tenant tpayne, show_devices atl01).
