@@ -2,7 +2,7 @@ This is just a basic program for me to play around with Nautobot Demo API (demo.
 
 To install-
 * cd to the directory of this project (after cloning)
-*  type 'pip install -e /home/USER/nautobot_api_sandbox' in terminal and press enter (change 'USER' to your username)
+*  type 'pip install -e /home/USER/nautobot-api-sandbox' in terminal and press enter (change 'USER' to your username)
 
 
 to run program-
@@ -18,8 +18,9 @@ to exit-
 
 
 -currently working on/ want to add
-* exception handling?
-* unittest
+* exception handling? Need to learn more about how these work exactly... 
+* valid unittest?
 * integrate click?
+* make sure using logging correctly
 
 This is a work in progress!!!
