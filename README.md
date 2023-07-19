@@ -18,7 +18,7 @@ to exit-
 
 
 -currently working on/ want to add
-* exception handling? 
+* exception handling? Need to learn more about how these work exactly... 
 * tenant name already exits bug
 * valid unittest?
 * integrate click?
