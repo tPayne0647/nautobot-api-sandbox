@@ -66,7 +66,7 @@ def test_show_devices(client, mock_api):
     """
     Test case for showing devices.
     """
-    devices = client.get_devices(selected_site="site1")
+    devices = client.get_devices(selected_site_name="site1")
     assert len(devices) == 3
     assert devices[0].name == "device1"
     assert devices[1].name == "device2"

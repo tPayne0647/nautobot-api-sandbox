@@ -14,3 +14,12 @@ temp/
 
 # other
 nautobot_api_sandbox.egg-info/
+
+# Ignore pytest stuff
+__pycache__
+*.py[cod]
+*.pyo
+*.pyd
+
+# pytest cache
+.pytest_cache/
