@@ -19,7 +19,6 @@ to exit-
 
 -currently working on/ want to add
 * exception handling? Need to learn more about how these work exactly... 
-* tenant name already exits bug
 * valid unittest?
 * integrate click?
 * make sure using logging correctly

@@ -24,10 +24,9 @@ class DemoNautobotClient:
             self.api = api
 
         self.logger = logging.getLogger(__name__)
-        self.logger.addHandler(
-            logging.StreamHandler()
-        )  # Outputs log messages to the console
-        self.logger.setLevel(logging.INFO)  # Set the desired log level
+        if not self.logger.hasHandlers():
+            self.logger.addHandler(logging.StreamHandler())  # Outputs log messages to the console
+            self.logger.setLevel(logging.INFO)  # Set the desired log level
 
     def get_sites(self):
         """Return a list of all sites."""
@@ -36,9 +35,7 @@ class DemoNautobotClient:
     def display_sites(self):
         """Display the names of all sites."""
         sites = self.get_sites()
-        self.logger.info(
-            "\nTotal sites: %s\n \n%s", len(sites), [site.name for site in sites]
-        )
+        self.logger.info("\nTotal sites: %s\n \n%s", len(sites), [site.name for site in sites])
 
     def get_devices(self, selected_site):
         """Return a list of all devices at the specified site, or raise SiteNotFoundError if the site does not exist."""
@@ -46,9 +43,7 @@ class DemoNautobotClient:
             devices = self.api.dcim.devices.filter(site=selected_site)
         except RequestError as request_error:
             if "is not one of the available choices" in str(request_error):
-                raise SiteNotFoundError(
-                    "Site '%s' not found.", selected_site
-                ) from request_error
+                raise SiteNotFoundError("Site '%s' not found.", selected_site) from request_error
             raise request_error
         if not devices:
             raise SiteNotFoundError("Site '%s' not found.", selected_site)
@@ -66,8 +61,14 @@ class DemoNautobotClient:
 
     def create_tenant(self, name):
         """Create a new tenant with the specified name and return it."""
-        tenant = self.api.tenancy.tenants.create(name=name)
-        self.logger.info("Tenant '%s' created successfully.\n", name)
+        try:
+            tenant = self.api.tenancy.tenants.create(name=name)
+        except RequestError as request_error:
+            if "already exists" in str(request_error):
+                return None
+            else:
+                # If the error is something else, we re-raise the exception
+                raise
         return tenant
 
     def get_tenant(self, name):
