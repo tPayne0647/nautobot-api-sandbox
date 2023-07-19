@@ -48,8 +48,14 @@ def user_interface():
 
     while True:
         command_input = input("Enter a command: ").split()
-        command = command_input[0]
+        command = command_input[0].lower()  # Convert command to lowercase
         arg = " ".join(command_input[1:])  # Join all items after the command with a space
+
+        # Process the argument based on its length
+        if len(arg) <= 5:
+            arg = arg.upper()  # Convert to uppercase if length is 5 or less
+        else:
+            arg = arg.title()  # Convert to title case if more than one word
 
         # Check if the command needs an argument and if it was provided
         if command in commands_with_arg and not arg:

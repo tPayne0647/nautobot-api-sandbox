@@ -37,27 +37,31 @@ class DemoNautobotClient:
         sites = self.get_sites()
         self.logger.info("\nTotal sites: %s\n \n%s", len(sites), [site.name for site in sites])
 
-    def get_devices(self, selected_site):
+    def get_devices(self, selected_site_name):
         """Return a list of all devices at the specified site, or raise SiteNotFoundError if the site does not exist."""
         try:
-            devices = self.api.dcim.devices.filter(site=selected_site)
+            # First, get the site by name
+            site = self.api.dcim.sites.get(name=selected_site_name)
+            if site is None:
+                raise SiteNotFoundError("Site '%s' not found." % selected_site_name)
+            # Then, get the devices for the site using the slug
+            devices = self.api.dcim.devices.filter(site=site.slug)
         except RequestError as request_error:
-            if "is not one of the available choices" in str(request_error):
-                raise SiteNotFoundError("Site '%s' not found.", selected_site) from request_error
             raise request_error
-        if not devices:
-            raise SiteNotFoundError("Site '%s' not found.", selected_site)
         return devices
 
     def display_devices(self, selected_site):
         """Display the names of all devices at the specified site."""
-        devices = self.get_devices(selected_site)
-        self.logger.info(
-            "\nTotal number of devices in [%s]: %s\n\n%s",
-            selected_site.upper(),
-            len(devices),
-            [device.name for device in devices],
-        )
+        try:
+            devices = self.get_devices(selected_site)
+            self.logger.info(
+                "\nTotal number of devices in [%s]: %s\n\n%s",
+                selected_site,
+                len(devices),
+                [device.name for device in devices],
+            )
+        except SiteNotFoundError:
+            self.logger.error("Site %s not found. Please enter a valid site name.", selected_site)
 
     def create_tenant(self, name):
         """Create a new tenant with the specified name and return it."""
