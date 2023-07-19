@@ -31,7 +31,9 @@ def user_interface():
 
     # Ask for API token
     while True:
-        api_token = input("Please enter your API token (or type 'exit' to quit): ")
+        api_token = input(
+            "Please enter your API token. HINT-check readme...(or type 'exit' to quit): "
+        )
         if api_token.lower() == "exit":
             return
         try:
