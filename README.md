@@ -37,6 +37,7 @@ Any help or tips would be awesome!
 - Integrate click?
 - Make sure using logging correctly
 - Poetry integration
+- publish application?
 
 This is a work in progress!!!
 
