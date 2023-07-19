@@ -53,11 +53,14 @@ def user_interface():
         command = command_input[0].lower()  # Convert command to lowercase
         arg = " ".join(command_input[1:])  # Join all items after the command with a space
 
-        # Process the argument based on its length
-        if len(arg) <= 5:
-            arg = arg.upper()  # Convert to uppercase if length is 5 or less
+        if command == "create_tenant" or command == "delete_tenant":
+            tenant_name = arg  # Store the tenant name without modifying capitalization
         else:
-            arg = arg.title()  # Convert to title case if more than one word
+            # Process the argument based on its length
+            if len(arg) <= 5:
+                arg = arg.upper()  # Convert to uppercase if length is 5 or less
+            else:
+                arg = arg.title()  # Convert to title case if more than one word
 
         # Check if the command needs an argument and if it was provided
         if command in commands_with_arg and not arg:
@@ -72,11 +75,11 @@ def user_interface():
             except SiteNotFoundError:
                 logger.error("Site %s not found. Please enter a valid site name.", arg)
         elif command == "create_tenant":
-            tenant = nautobot_client.create_tenant(arg)
+            tenant = nautobot_client.create_tenant(tenant_name)
             if tenant is None:
-                logger.error("A tenant with the name '%s' already exists.", arg)
+                logger.error("A tenant with the name '%s' already exists.", tenant_name)
             else:
-                logger.info("Tenant '%s' created successfully.", arg)
+                logger.info("Tenant '%s' created successfully.", tenant_name)
         elif command == "delete_tenant":
             try:
                 nautobot_client.delete_tenant(arg)
