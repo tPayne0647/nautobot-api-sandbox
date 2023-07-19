@@ -4,7 +4,10 @@ Module for testing Nautobot API Sandbox
 
 from unittest.mock import MagicMock
 import pytest
-from nautobot_api_sandbox.nauto_demo_functions import DemoNautobotClient, TenantNotFoundError
+from nautobot_api_sandbox.nauto_demo_functions import (
+    DemoNautobotClient,
+    TenantNotFoundError,
+)
 
 
 @pytest.fixture

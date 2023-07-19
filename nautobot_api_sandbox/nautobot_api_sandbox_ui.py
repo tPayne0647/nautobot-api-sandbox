@@ -61,22 +61,30 @@ def user_interface():
             try:
                 nautobot_client.delete_tenant(arg)
             except TenantNotFoundError:
-                logger.error("Tenant '%s' not found. Please enter a valid tenant name.", arg)
+                logger.error(
+                    "Tenant '%s' not found. Please enter a valid tenant name.", arg
+                )
         elif command == "show_tenants":
             nautobot_client.display_tenants()
         elif command == "get_tenant":
             try:
                 tenant = nautobot_client.get_tenant(arg)
                 if tenant is not None:
-                    logger.info("Tenant ID: %s\nTenant Name: %s", tenant.id, tenant.name)
+                    logger.info(
+                        "Tenant ID: %s\nTenant Name: %s", tenant.id, tenant.name
+                    )
             except TenantNotFoundError:
-                logger.error("Tenant '%s' not found. Please enter a valid tenant name.", arg)
+                logger.error(
+                    "Tenant '%s' not found. Please enter a valid tenant name.", arg
+                )
         elif command == "help":
             print(WELCOME_MSG)
         elif command == "exit":
             break
         else:
-            logger.error("Unrecognized command. Type 'help' to see the list of available commands.")
+            logger.error(
+                "Unrecognized command. Type 'help' to see the list of available commands."
+            )
 
 
 if __name__ == "__main__":

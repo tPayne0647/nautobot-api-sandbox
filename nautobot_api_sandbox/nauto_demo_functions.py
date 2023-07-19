@@ -24,7 +24,9 @@ class DemoNautobotClient:
             self.api = api
 
         self.logger = logging.getLogger(__name__)
-        self.logger.addHandler(logging.StreamHandler())  # Outputs log messages to the console
+        self.logger.addHandler(
+            logging.StreamHandler()
+        )  # Outputs log messages to the console
         self.logger.setLevel(logging.INFO)  # Set the desired log level
 
     def get_sites(self):
@@ -34,7 +36,9 @@ class DemoNautobotClient:
     def display_sites(self):
         """Display the names of all sites."""
         sites = self.get_sites()
-        self.logger.info("\nTotal sites: %s\n \n%s", len(sites), [site.name for site in sites])
+        self.logger.info(
+            "\nTotal sites: %s\n \n%s", len(sites), [site.name for site in sites]
+        )
 
     def get_devices(self, selected_site):
         """Return a list of all devices at the specified site, or raise SiteNotFoundError if the site does not exist."""
@@ -42,7 +46,9 @@ class DemoNautobotClient:
             devices = self.api.dcim.devices.filter(site=selected_site)
         except RequestError as request_error:
             if "is not one of the available choices" in str(request_error):
-                raise SiteNotFoundError("Site '%s' not found.", selected_site) from request_error
+                raise SiteNotFoundError(
+                    "Site '%s' not found.", selected_site
+                ) from request_error
             raise request_error
         if not devices:
             raise SiteNotFoundError("Site '%s' not found.", selected_site)
@@ -52,7 +58,10 @@ class DemoNautobotClient:
         """Display the names of all devices at the specified site."""
         devices = self.get_devices(selected_site)
         self.logger.info(
-            "\nTotal number of devices in [%s]: %s\n\n%s", selected_site.upper(), len(devices), [device.name for device in devices]
+            "\nTotal number of devices in [%s]: %s\n\n%s",
+            selected_site.upper(),
+            len(devices),
+            [device.name for device in devices],
         )
 
     def create_tenant(self, name):
@@ -85,5 +94,7 @@ class DemoNautobotClient:
         """Display the names of all tenants."""
         tenants = self.get_tenants()
         self.logger.info(
-            "\nTotal tenants: %s\n \n%s", len(tenants), [tenant.name for tenant in tenants]
+            "\nTotal tenants: %s\n \n%s",
+            len(tenants),
+            [tenant.name for tenant in tenants],
         )
