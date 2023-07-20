@@ -32,12 +32,15 @@ Any help or tips would be awesome!
 
 ## Currently Working On / Want to Add
 
-- Exception handling? Need to learn more about how these work exactly...
-- Valid unittest?
-- Integrate click?
-- Make sure using logging correctly
-- Poetry integration
-- publish application?
+- [ ] Exception handling? Need to learn more about how these work exactly.
+- [ ] Valid unittest? Need more tests...
+- [ ] Integrate click? really want to rework UI
+- [ ] Make sure using logging correctly
+- [ ] Fix delete_tenant RequestError 409
+- [ ] Update readme instructions
+- [x] Poetry integration
+- [x] Publish package
+
 
 This is a work in progress!!!
 
