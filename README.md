@@ -40,7 +40,7 @@ Any help or tips would be greatly appreciated!!
 - [ ] Valid unittest? Need more tests...
 - [ ] Integrate click? really want to rework UI
 - [ ] Make sure using logging correctly
-- [ ] Fix delete_tenant RequestError 409
+- [x] Fix delete_tenant RequestError 409
 - [x] Update readme instructions
 - [x] Poetry integration
 - [x] Publish package

@@ -86,8 +86,11 @@ class DemoNautobotClient:
         """Delete the tenant with the specified name."""
         tenant = self.get_tenant(name)
         if tenant is not None:
-            tenant.delete()
-            self.logger.info("Tenant '%s' deleted successfully!", name)
+            try:
+                tenant.delete()
+                return True, "Tenant '%s' deleted successfully!" % name
+            except pynautobot.core.query.RequestError as request_error:
+                return False, "Failed to delete tenant '%s'. Error: %s" % (name, request_error)
         else:
             raise TenantNotFoundError("Tenant with name '%s' not found.", name)
 

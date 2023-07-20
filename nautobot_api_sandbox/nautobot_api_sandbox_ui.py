@@ -82,7 +82,9 @@ def user_interface():
                 logger.info("Tenant '%s' created successfully.", tenant_name)
         elif command == "delete_tenant":
             try:
-                nautobot_client.delete_tenant(arg)
+                success, message = nautobot_client.delete_tenant(arg)
+                if not success:
+                    logger.error(message)
             except TenantNotFoundError:
                 logger.error("Tenant '%s' not found. Please enter a valid tenant name.", arg)
         elif command == "show_tenants":
