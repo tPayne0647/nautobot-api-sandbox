@@ -29,7 +29,7 @@ Before getting started, make sure you have the following installed on your machi
 3. Install the project dependencies using Poetry: `poetry install`
 4. Install the development dependencies: `poetry install --dev`
 4. Activate the virtual environment created by Poetry: `poetry shell`
-5. Run the program: `nautobot_api_sandbox`
+5. Run the program: `python -m nautobot_api_sandbox.nautobot_api_sandbox_ui`
 
 To run the tests: `poetry run pytest`
 
