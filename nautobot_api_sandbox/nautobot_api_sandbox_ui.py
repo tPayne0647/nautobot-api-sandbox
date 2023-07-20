@@ -43,7 +43,7 @@ def user_interface():
         except RequestError:
             logger.error("Invalid API token. Please try again.")
 
-    print(WELCOME_MSG)
+    logger.info(WELCOME_MSG)  # Use logger.info instead of print
 
     # Commands that need an argument
     commands_with_arg = ["show_devices", "create_tenant", "delete_tenant", "get_tenant"]
@@ -53,7 +53,7 @@ def user_interface():
         command = command_input[0].lower()  # Convert command to lowercase
         arg = " ".join(command_input[1:])  # Join all items after the command with a space
 
-        if command == "create_tenant" or command == "delete_tenant":
+        if command == "create_tenant" or command == "delete_tenant" or command == "get_tenant":
             tenant_name = arg  # Store the tenant name without modifying capitalization
         else:
             # Process the argument based on its length
@@ -83,21 +83,21 @@ def user_interface():
         elif command == "delete_tenant":
             try:
                 success, message = nautobot_client.delete_tenant(arg)
-                if not success:
+                if success:
+                    logger.info(message)
+                else:
                     logger.error(message)
-            except TenantNotFoundError:
-                logger.error("Tenant '%s' not found. Please enter a valid tenant name.", arg)
+            except TenantNotFoundError as e:
+                logger.error(str(e))
         elif command == "show_tenants":
             nautobot_client.display_tenants()
         elif command == "get_tenant":
             try:
-                tenant = nautobot_client.get_tenant(arg)
-                if tenant is not None:
-                    logger.info("Tenant ID: %s\nTenant Name: %s", tenant.id, tenant.name)
+                nautobot_client.display_tenant(arg)  # Use the display_tenant method
             except TenantNotFoundError:
                 logger.error("Tenant '%s' not found. Please enter a valid tenant name.", arg)
         elif command == "help":
-            print(WELCOME_MSG)
+            logger.info(WELCOME_MSG)  # Use logger.info instead of print
         elif command == "exit":
             break
         else:
