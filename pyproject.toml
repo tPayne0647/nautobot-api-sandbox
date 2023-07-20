@@ -8,7 +8,7 @@ packages = [{include = "nautobot_api_sandbox"}]
 
 [tool.poetry.scripts]
 nautobot_api_sandbox = "nautobot_api_sandbox.nautobot_api_sandbox_ui:user_interface"
-
+nauto_click = "nautobot_api_sandbox.click_ui:main"
 [tool.poetry.dependencies]
 python = "^3.9"
 pynautobot = "1.5.0"
