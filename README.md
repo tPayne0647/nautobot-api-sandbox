@@ -12,7 +12,7 @@ This is a simple program to test my programming knowledge and learn more about A
 
    This will start the Nautobot API Sandbox command-line interface.
    Follow the instructions in the application to interact with the Nautobot API.
-   NOTE: You don't need to add '()' or "" quotes. Simply type the command + the name (e.g., create_tenant tpayne, show_devices atl01).
+   NOTE: You don't need to add '()' or "" quotes. Simply type the command + name (e.g., create_tenant tpayne, show_devices atl01).
 
 
 ## Development Prerequisites
