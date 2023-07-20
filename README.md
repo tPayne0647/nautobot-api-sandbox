@@ -15,7 +15,7 @@ Before getting started, make sure you have the following installed on your machi
 2. Navigate to the project directory: `cd nautobot-api-sandbox`
 3. Install the project dependencies using Poetry: `poetry install`
 4. Activate the virtual environment created by Poetry: `poetry shell`
-5. Run the program: `python nautobot_api_sandbox/nautobot_api_sandbox_ui.py`
+5. Run the program: `nautobot_api_sandbox`
 
 Demo token: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
