@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nautobot_api_sandbox"
-version = "0.1.0"
+version = "0.1.1"
 description = "This is just a simple program to test my programing knowledge and to learn more about API and Nautobot."
 authors = ["tPayne0647"]
 readme = "README.md"
