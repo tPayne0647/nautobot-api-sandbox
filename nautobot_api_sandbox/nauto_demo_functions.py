@@ -79,20 +79,27 @@ class DemoNautobotClient:
         """Return the tenant with the specified name, or raise TenantNotFoundError if the tenant does not exist."""
         tenant = self.api.tenancy.tenants.get(name=name)
         if tenant is None:
-            raise TenantNotFoundError("Tenant with name '%s' not found.", name)
+            raise TenantNotFoundError("Tenant with name '%s' not found." % name)
         return tenant
+
+    def display_tenant(self, name):
+        """Display the ID and name of the tenant with the specified name."""
+        try:
+            tenant = self.get_tenant(name)
+            self.logger.info("Tenant ID: %s\nTenant Name: %s", tenant.id, tenant.name)
+        except TenantNotFoundError:
+            self.logger.error("Tenant '%s' not found. Please enter a valid tenant name.", name)
 
     def delete_tenant(self, name):
         """Delete the tenant with the specified name."""
-        tenant = self.get_tenant(name)
-        if tenant is not None:
-            try:
-                tenant.delete()
-                return True, "Tenant '%s' deleted successfully!" % name
-            except pynautobot.core.query.RequestError as request_error:
-                return False, "Failed to delete tenant '%s'. Error: %s" % (name, request_error)
-        else:
-            raise TenantNotFoundError("Tenant with name '%s' not found.", name)
+        try:
+            tenant = self.get_tenant(name)
+            tenant.delete()
+            return True, "Tenant '%s' deleted successfully!" % name
+        except TenantNotFoundError:
+            raise
+        except pynautobot.core.query.RequestError as request_error:
+            return False, "Failed to delete tenant '%s'. Error: %s" % (name, request_error)
 
     def get_tenants(self):
         """Return a list of all tenants."""

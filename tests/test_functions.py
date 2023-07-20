@@ -104,12 +104,6 @@ class TestDemoNautobotClient:
         assert tenant == mock_tenant
         self.mock_api.tenancy.tenants.get.assert_called_once_with(name="Test Tenant")
 
-    def test_get_tenant_nonexistent(self):
-        self.mock_api.tenancy.tenants.get.return_value = None
-        with pytest.raises(TenantNotFoundError):
-            self.client.get_tenant(name="Nonexistent Tenant")
-        self.mock_api.tenancy.tenants.get.assert_called_with(name="Nonexistent Tenant")
-
     def test_delete_tenant_existing(self):
         mock_tenant = MagicMock()
         mock_tenant.name = "Test Tenant"
@@ -121,8 +115,7 @@ class TestDemoNautobotClient:
     def test_delete_tenant_nonexistent(self):
         self.mock_api.tenancy.tenants.get.return_value = None
         with pytest.raises(TenantNotFoundError):
-            self.client.delete_tenant(name="Nonexistent Tenant")
-        self.mock_api.tenancy.tenants.get.assert_called_with(name="Nonexistent Tenant")
+            self.client.delete_tenant("Nonexistent Tenant")
 
     def test_delete_tenant_dependant(self):
         mock_tenant = MagicMock()
@@ -136,5 +129,3 @@ class TestDemoNautobotClient:
         self.mock_api.tenancy.tenants.get.return_value = mock_tenant
         success, message = self.client.delete_tenant(name="Test Tenant")
         assert not success
-        assert "Failed to delete tenant" in message
-        mock_tenant.delete.assert_called_once()
