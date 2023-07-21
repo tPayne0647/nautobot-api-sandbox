@@ -50,7 +50,8 @@ def mock_token():
 class TestDemoNautobotClient:
     @pytest.fixture(autouse=True)
     def setup_demo_nautobot_client(self, mock_api, mock_token):
-        self.client = DemoNautobotClient(api_token=mock_token, api=mock_api)
+        self.client = DemoNautobotClient(api_token=mock_token)
+        self.client.api = mock_api
         self.mock_api = mock_api
 
     def test_get_sites(self):
