@@ -6,7 +6,7 @@ https://demo.nautobot.com/
 
 ## Getting Started
 
-1. Install package: `pip install nautobot_api_sandbox`
+1. Install package: `sudo pip install nautobot_api_sandbox`
 2. Run package: `nautobot_api_sandbox`
 3. Enter Demo token: `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`
 
