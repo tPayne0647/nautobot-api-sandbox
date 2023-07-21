@@ -20,12 +20,9 @@ class DemoNautobotClient:
     TENANT_NOT_FOUND_ERROR_MSG = "Tenant '%s' not found."
     DELETE_TENANT_ERROR_MSG = "Failed to delete tenant '%s'. Error: %s."
 
-    def __init__(self, api_token, api=None):
-        """Initialize the client with an API token and an optional pynautobot API object."""
-        if api is None:
-            self.api = pynautobot.api("https://demo.nautobot.com", token=api_token)
-        else:
-            self.api = api
+    def __init__(self, api_token):
+        """Initialize the client with an API token."""
+        self.api = pynautobot.api("https://demo.nautobot.com", token=api_token)
 
         self.logger = logging.getLogger(__name__)
         if not self.logger.hasHandlers():
