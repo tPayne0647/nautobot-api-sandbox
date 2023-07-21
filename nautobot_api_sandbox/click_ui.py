@@ -101,4 +101,4 @@ def get_tenant(ctx, tenant_name):
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-    cli(obj={})  # Pass an empty context object
+    cli(obj={})

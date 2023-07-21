@@ -17,6 +17,8 @@ class DemoNautobotClient:
     """A client for interacting with Nautobot."""
 
     DELETE_TENANT_DEPENDENT_OBJECTS_MSG = "Failed to delete tenant '%s'. It has dependent objects."
+    TENANT_NOT_FOUND_ERROR_MSG = "Tenant '%s' not found."
+    DELETE_TENANT_ERROR_MSG = "Failed to delete tenant '%s'. Error: %s."
 
     def __init__(self, api_token, api=None):
         """Initialize the client with an API token and an optional pynautobot API object."""
