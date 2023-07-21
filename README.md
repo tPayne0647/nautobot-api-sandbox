@@ -15,6 +15,8 @@ https://demo.nautobot.com/
    
    :memo: NOTE: You don't need to add '()' or "" quotes. Simply type the command + name (e.g., create_tenant tpayne, show_devices atl01).
 
+   To update: `pip install --upgrade nautobot_api_sandbox`
+
 ## Development Prerequisites
 
 Before getting started, make sure you have the following installed on your machine:
