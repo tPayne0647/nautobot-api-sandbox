@@ -1,6 +1,14 @@
 import logging
 import click
 from pynautobot.core.query import RequestError
+from nautobot_api_sandbox_ui import (
+    INVALID_SITE_MSG,
+    INVALID_TENANT_MSG,
+    TOKEN_ERROR_MSG,
+    COMMAND_ARG_ERROR_MSG,
+    TENANT_CREATED_SUCCESS_MSG,
+    TENANT_EXISTS_ERROR_MSG,
+)
 from nautobot_api_sandbox.nauto_demo_functions import (
     DemoNautobotClient,
     TenantNotFoundError,
@@ -16,7 +24,7 @@ def cli(ctx):
         ctx.obj = DemoNautobotClient(api_token=api_token)
         ctx.obj.api.dcim.sites.all()  # Make a simple request to check if the token is valid
     except RequestError:
-        logging.error("Invalid API token. Please try again.")
+        logging.error(TOKEN_ERROR_MSG)
         ctx.exit()
 
 
@@ -26,14 +34,24 @@ def show_sites(ctx):
     ctx.obj.display_sites()
 
 
-@cli.command()
+@click.command()
 @click.argument("site_name")
 @click.pass_context
 def show_devices(ctx, site_name):
+    # Capitalize if the site_name is less than 5 characters
+    if len(site_name) <= 5:
+        site_name = site_name.upper()
+    # Convert to title case if the site_name is more than one word
+    elif " " in site_name:
+        site_name = site_name.title()
+
     try:
         ctx.obj.display_devices(site_name)
     except SiteNotFoundError:
-        logging.error("Site %s not found. Please enter a valid site name.", site_name)
+        logging.error(INVALID_SITE_MSG, site_name)
+
+
+cli.add_command(show_devices)
 
 
 @cli.command()
@@ -42,12 +60,12 @@ def show_devices(ctx, site_name):
 def create_tenant(ctx, tenant_name):
     tenant = ctx.obj.create_tenant(tenant_name)
     if tenant is None:
-        logging.error("A tenant with the name '%s' already exists.", tenant_name)
+        logging.error(TENANT_EXISTS_ERROR_MSG, tenant_name)
     else:
-        logging.info("Tenant '%s' created successfully.", tenant_name)
+        logging.info(TENANT_CREATED_SUCCESS_MSG, tenant_name)
 
 
-@click.command()
+@cli.command()
 @click.argument("tenant_name")
 @click.pass_context
 def delete_tenant(ctx, tenant_name):
@@ -60,10 +78,7 @@ def delete_tenant(ctx, tenant_name):
             else:
                 logging.error(message)
     except TenantNotFoundError as e:
-        logging.error(str(e))
-
-
-cli.add_command(delete_tenant)
+        logging.error(INVALID_TENANT_MSG, tenant_name)
 
 
 @cli.command()
@@ -81,7 +96,7 @@ def get_tenant(ctx, tenant_name):
         if tenant is not None:
             logging.info("Tenant ID: %s\nTenant Name: %s", tenant.id, tenant.name)
     except TenantNotFoundError:
-        logging.error("Tenant '%s' not found. Please enter a valid tenant name.", tenant_name)
+        logging.error(INVALID_TENANT_MSG, tenant_name)
 
 
 if __name__ == "__main__":

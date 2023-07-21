@@ -16,6 +16,8 @@ class SiteNotFoundError(Exception):
 class DemoNautobotClient:
     """A client for interacting with Nautobot."""
 
+    DELETE_TENANT_DEPENDENT_OBJECTS_MSG = "Failed to delete tenant '%s'. It has dependent objects."
+
     def __init__(self, api_token, api=None):
         """Initialize the client with an API token and an optional pynautobot API object."""
         if api is None:
@@ -39,15 +41,12 @@ class DemoNautobotClient:
 
     def get_devices(self, selected_site_name):
         """Return a list of all devices at the specified site, or raise SiteNotFoundError if the site does not exist."""
-        try:
-            # First, get the site by name
-            site = self.api.dcim.sites.get(name=selected_site_name)
-            if site is None:
-                raise SiteNotFoundError("Site '%s' not found." % selected_site_name)
-            # Then, get the devices for the site using the slug
-            devices = self.api.dcim.devices.filter(site=site.slug)
-        except RequestError as request_error:
-            raise request_error
+        # First, get the site by name
+        site = self.api.dcim.sites.get(name=selected_site_name)
+        if site is None:
+            raise SiteNotFoundError("Site '%s' not found." % selected_site_name)
+        # Then, get the devices for the site using the slug
+        devices = self.api.dcim.devices.filter(site=site.slug)
         return devices
 
     def display_devices(self, selected_site):
@@ -86,20 +85,23 @@ class DemoNautobotClient:
         """Display the ID and name of the tenant with the specified name."""
         try:
             tenant = self.get_tenant(name)
-            self.logger.info("Tenant ID: %s\nTenant Name: %s", tenant.id, tenant.name)
+            self.logger.info("\nTenant ID: %s\nTenant Name: %s", tenant.id, tenant.name)
         except TenantNotFoundError:
             self.logger.error("Tenant '%s' not found. Please enter a valid tenant name.", name)
 
     def delete_tenant(self, name):
         """Delete the tenant with the specified name."""
+        tenant = self.get_tenant(name)
+        if tenant is None:
+            return False, self.TENANT_NOT_FOUND_ERROR_MSG % name
         try:
-            tenant = self.get_tenant(name)
             tenant.delete()
             return True, "Tenant '%s' deleted successfully!" % name
-        except TenantNotFoundError:
-            raise
         except pynautobot.core.query.RequestError as request_error:
-            return False, "Failed to delete tenant '%s'. Error: %s" % (name, request_error)
+            if request_error.req.status_code == 409:
+                return False, self.DELETE_TENANT_DEPENDENT_OBJECTS_MSG % name
+            else:
+                return False, self.DELETE_TENANT_ERROR_MSG % (name, str(request_error))
 
     def get_tenants(self):
         """Return a list of all tenants."""
