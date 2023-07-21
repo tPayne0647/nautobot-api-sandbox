@@ -16,6 +16,18 @@ https://demo.nautobot.com/
    :memo: NOTE: You don't need to add '()' or "" quotes. Simply type the command + name (e.g., create_tenant tpayne, show_devices atl01).
 
 
+## CLick UI command examples
+- python nautobot_api_sandbox/click_ui.py show-sites
+- python nautobot_api_sandbox/click_ui.py show-devices SITE_NAME
+- python nautobot_api_sandbox/click_ui.py create-tenant TENANT_NAME
+- python nautobot_api_sandbox/click_ui.py delete-tenant TENANT_NAME
+- python nautobot_api_sandbox/click_ui.py show-tenants
+- python nautobot_api_sandbox/click_ui.py get-tenant TENANT_NAME
+- python nautobot_api_sandbox/click_ui.py COMMAND --help
+
+Remember to replace SITE_NAME or TENANT_NAME with the name of the site or tenant. You dont need to add quotation marks!
+
+
 ## Development Prerequisites
 
 Before getting started, make sure you have the following installed on your machine:
@@ -37,10 +49,10 @@ Any help or tips would be greatly appreciated!!
 
 ## Currently Working On / Want to Add
 
-- [ ] Exception handling?
 - [ ] Valid unittest? Need more tests...
-- [ ] Integrate click? really want to rework UI
 - [ ] Make sure using logging correctly
+- [x] Integrate click? really want to rework UI
+- [x] Exception handling
 - [x] Fix delete_tenant RequestError 409
 - [x] Update readme instructions
 - [x] Poetry integration
