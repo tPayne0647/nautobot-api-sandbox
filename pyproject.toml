@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "nautobot_api_sandbox"
-version = "0.1.4"
+version = "0.1.5"
 description = "This is just a simple program to test my programing knowledge and to learn more about API and Nautobot."
 authors = ["tPayne0647"]
 readme = "README.md"
@@ -13,7 +13,7 @@ nauto_click = "nautobot_api_sandbox.click_ui:main"
 [tool.poetry.dependencies]
 python = "^3.9"
 pynautobot = "1.5.0"
-nautobot-api-sandbox-clickui = "^0.1.0"
+
 
 [tool.poetry.group.dev.dependencies]
 black = "23.3.0"
