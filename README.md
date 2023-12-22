@@ -2,6 +2,7 @@
 
 This is a simple program to test my programming knowledge and learn more about API, Nautobot, and developing in general.
 
+
 https://demo.nautobot.com/
 
 ## Getting Started
@@ -34,25 +35,11 @@ Before getting started, make sure you have the following installed on your machi
 
 To run the tests: `poetry run pytest`
 
-Any help or tips would be greatly appreciated!!
-
-## CLick UI command examples 
-must be in poetry enviroment
-- python nautobot_api_sandbox/click_ui.py show-sites
-- python nautobot_api_sandbox/click_ui.py show-devices SITE_NAME
-- python nautobot_api_sandbox/click_ui.py create-tenant TENANT_NAME
-- python nautobot_api_sandbox/click_ui.py delete-tenant TENANT_NAME
-- python nautobot_api_sandbox/click_ui.py show-tenants
-- python nautobot_api_sandbox/click_ui.py get-tenant TENANT_NAME
-- python nautobot_api_sandbox/click_ui.py COMMAND --help
-
-Remember to replace SITE_NAME or TENANT_NAME with the name of the site or tenant. You dont need to add quotation marks!
-
 ## Currently Working On / Want to Add
 
 - [ ] Valid unittest? Need more tests...
 - [ ] Make sure using logging correctly
-- [x] Integrate click? really want to rework UI
+- [ ] Integrate click? really want to rework UI
 - [x] Exception handling
 - [x] Fix delete_tenant RequestError 409
 - [x] Update readme instructions
